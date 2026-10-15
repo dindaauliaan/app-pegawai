@@ -8,13 +8,16 @@
     <link rel="shortcut icon" type="image/png" href="{{ asset('templating/src/assets/images/logos/seodashlogo.png') }}" />
     <link rel="stylesheet" href="{{ asset('node_modules/simplebar/dist/simplebar.min.css') }}" />
     <link rel="stylesheet" href="{{ asset('templating/src/assets/css/styles.min.css') }}" />
+    @vite(['resources/css/app.css'])
 </head>
 
 <body>
     <!--  Body Wrapper -->
     <div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
         data-sidebar-position="fixed" data-header-position="fixed">
-        @include('partials.sidebar')
+        @section('sidebar')
+            @include('partials.sidebar')
+        @show
         <!--  Main wrapper -->
         <div class="body-wrapper">
         <!--  Header Start -->

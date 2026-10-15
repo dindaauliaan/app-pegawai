@@ -10,7 +10,6 @@
         </ul>
     </div>
 @endif
-    <h1 class="mb-4">Form Pegawai</h1>
     <form action="/employees" method="POST">
         @csrf
         <div class="mb-3">

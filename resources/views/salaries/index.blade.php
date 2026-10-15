@@ -1,6 +1,8 @@
 @extends('layouts.master')
 @section('title', 'Daftar Gaji Karyawan')
+
 @section('content')
+
 @if ($errors->any())
     <div class="alert alert-danger">
         <ul>
@@ -10,43 +12,59 @@
         </ul>
     </div>
 @endif
+
 @if (session('success'))
     <div class="alert alert-success">
         {{ session('success') }}
     </div>
 @endif
+
+@if(auth()->user()->role === 'admin')
 <a href="/salaries/create" class="btn btn-primary mb-3">Tambah Data Gaji Karyawan</a>
+@endif
+
 <table class="table table-striped table-bordered table-hover">
     <thead class="table-primary">
         <tr>
-            <th scope="col">#</th>
-            <th scope="col">Nama Karyawan</th>
-            <th scope="col">Bulan</th>
-            <th scope="col">Gaji Pokok</th>
-            <th scope="col">Tunjangan</th>
-            <th scope="col">Potongan</th>
-            <th scope="col">Total Gaji</th>
-            <th scope="col">Aksi</th>
+            <th>#</th>
+            <th>Nama Karyawan</th>
+            <th>Bulan</th>
+            <th>Gaji Pokok</th>
+            <th>Tunjangan</th>
+            <th>Potongan</th>
+            <th>Total Gaji</th>
+            <th>Aksi</th>
         </tr>
     </thead>
+
     <tbody>
         @forelse ($salaries as $salary)
             <tr>
-                <th scope="row">{{ $loop->iteration }}</th>
+                <td>{{ $loop->iteration }}</td>
                 <td>{{ $salary->employee->nama_lengkap }}</td>
                 <td>{{ $salary->bulan }}</td>
                 <td>{{ $salary->gaji_pokok }}</td>
                 <td>{{ $salary->tunjangan }}</td>
                 <td>{{ $salary->potongan }}</td>
                 <td>{{ $salary->total_gaji }}</td>
+
                 <td>
-                    <form action="/salaries/{{$salary->id}}" method="POST" style="display:inline;">
-                        <a href="/salaries/{{$salary->id}}/edit" class="btn btn-secondary btn-sm">Edit</a>
+                    @if(auth()->user()->role === 'admin')
+                    <form action="/salaries/{{ $salary->id }}" method="POST" style="display:inline;">
+                        <a href="/salaries/{{ $salary->id }}/edit" class="btn btn-secondary btn-sm">Edit</a>
+
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">Delete</button>
+
+                        <button type="submit"
+                            onclick="return confirm('Yakin ingin menghapus?')"
+                            class="btn btn-danger btn-sm">
+                            Delete
+                        </button>
                     </form>
+                    @endif
                 </td>
+
             </tr>
         @empty
             <tr>
@@ -55,4 +73,5 @@
         @endforelse
     </tbody>
 </table>
+
 @endsection

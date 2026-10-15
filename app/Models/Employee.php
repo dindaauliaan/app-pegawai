@@ -33,8 +33,8 @@ class Employee extends Model
     }
 
     // Relasi ke Salary
-    public function salaries()
+    public function salary()
     {
-        return $this->hasMany(Salary::class, 'karyawan_id');
+        return $this->hasOne(Salaries::class, 'karyawan_id')->latestOfMany();
     }
 }

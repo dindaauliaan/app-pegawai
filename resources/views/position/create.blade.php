@@ -23,6 +23,7 @@
         </div>
         <div class="mb-3">
             <select class="form-select" name="gaji_pokok" aria-label="Default select example">
+                gaji pokok
                 <option selected>Open this select menu</option>
                 @foreach ($salaries as $id => $gaji_pokok)
                     <option value="{{ $gaji_pokok }}">{{ $gaji_pokok }}</option>

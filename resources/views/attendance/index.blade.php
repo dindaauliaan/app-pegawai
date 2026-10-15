@@ -5,8 +5,8 @@
 
     <a href="{{ route('attendance.create') }}" class="btn btn-primary mb-3">Absen Masuk</a>
 
-    <table class="table table-bordered">
-        <thead>
+    <table class="table table-striped table-bordered table-hover">
+        <thead class="table-primary">
             <tr>
                 <th>ID</th>
                 <th>Nama Karyawan</th>
@@ -36,8 +36,10 @@
                     @endif
                     <form action="{{ route('attendance.destroy', $absen->id) }}" method="POST" class="d-inline">
                         @csrf
+                        @if(auth()->user()->role === 'admin')
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm">Hapus</button>
+                        @endif
                     </form>
                 </td>
             </tr>

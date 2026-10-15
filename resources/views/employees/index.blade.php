@@ -15,7 +15,9 @@
         {{ session('success') }}
     </div>
 @endif
-<a href="/employees/create" class="btn btn-primary mb-3">Tambah Pegawai</a> 
+@if(auth()->user()->role === 'admin')
+    <a href="/employees/create" class="btn btn-primary mb-3">Tambah Pegawai</a> 
+@endif
 <table class="table table-striped table-bordered table-hover">
     <thead class="table-primary">
         <tr>
@@ -34,8 +36,10 @@
                         <a href="/employees/{{$employee->id}}" class="btn btn-info btn-sm">Detail</a>
                         <a href="/employees/{{$employee->id}}/edit" class="btn btn-secondary btn-sm">Edit</a> 
                         @csrf
+                        @if(auth()->user()->role === 'admin')
                         @method('DELETE')
                         <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Yakin ingin menghapus?')">Delete</button>
+                        @endif
                     </form>
                 </td>
             </tr>

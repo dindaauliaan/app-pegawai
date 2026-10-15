@@ -12,7 +12,6 @@ class AttendanceController extends Controller
     public function index()
     {
         $attendances = Attendance::with('employee')->get();
-
         return view('attendance.index', compact('attendances'));
     }
     public function create()
@@ -54,4 +53,51 @@ class AttendanceController extends Controller
 
         return redirect()->route('attendance.index')->with('success', 'Data absensi berhasil dihapus!');
     }
+    public function checkIn()
+    {
+        $employeeId = auth()->user()->employee_id;
+
+        // Cek apakah sudah absen hari ini
+        $today = Attendance::where('karyawan_id', $employeeId)
+            ->whereDate('tanggal', now()->toDateString())
+            ->first();
+
+        if ($today) {
+            return redirect()->back()->with('error', 'Anda sudah absen hari ini.');
+        }
+
+        Attendance::create([
+            'karyawan_id' => $employeeId,
+            'tanggal' => now()->toDateString(),
+            'waktu_masuk' => now()->toTimeString(),
+            'status_absensi' => 'Hadir',
+        ]);
+
+        return redirect()->back()->with('success', 'Check-in berhasil!');
+    }
+
+    public function checkOut()
+    {
+        $employeeId = auth()->user()->employee_id;
+
+        // Ambil absensi hari ini
+        $today = Attendance::where('karyawan_id', $employeeId)
+            ->whereDate('tanggal', now()->toDateString())
+            ->first();
+
+        if (!$today) {
+            return redirect()->back()->with('error', 'Anda belum check-in.');
+        }
+
+        if ($today->waktu_keluar) {
+            return redirect()->back()->with('error', 'Anda sudah check-out hari ini.');
+        }
+
+        $today->update([
+            'waktu_keluar' => now()->toTimeString(),
+        ]);
+
+        return redirect()->back()->with('success', 'Check-out berhasil!');
+    }
+
 }

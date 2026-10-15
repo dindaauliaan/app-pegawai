@@ -38,9 +38,10 @@
             <label for="tanggal_masuk" class="form-label">Tanggal Masuk</label>
             <input type="date" class="form-control" id="tanggal_masuk" name="tanggal_masuk" value="{{ $employee->tanggal_masuk }}">
         </div>
+        @if(auth()->user()->role === 'admin')
         <div class="mb-3">
             <label for="status">Status:</label>
-            <select id="status" name="status">
+            <select id="status" name="status" class="form-select">
                 <option value="aktif" {{ $employee->status == 'aktif' ? 'selected' : '' }}>Aktif</option>
                 <option value="nonaktif" {{ $employee->status == 'nonaktif' ? 'selected' : '' }}>Nonaktif</option>
             </select>
@@ -62,7 +63,8 @@
                     <option value="{{ $position->id }}" {{ $employee->jabatan_id == $position->id ? 'selected' : '' }}>{{ $position->nama_jabatan }}</option>
                 @endforeach
             </select>
-        </div>  
+        </div> 
+        @endif 
         <button type="submit" class="btn btn-primary">Edit</button>
     </form>
 
